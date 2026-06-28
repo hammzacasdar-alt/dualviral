@@ -572,7 +572,7 @@ export default function App() {
             <div className="price-card popular">
               <div className="popular-badge">⭐ MOST POPULAR</div>
               <div className="price-plan">Pro</div>
-              <div className="price-amount"><sup>$</sup>19</div>
+              <div className="price-amount"><sup>$</sup>9.99</div>
               <div className="price-period">per month</div>
               <div className="price-desc">For serious creators who post daily on multiple platforms.</div>
               <ul className="price-features">
