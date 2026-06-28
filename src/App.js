@@ -587,7 +587,7 @@ export default function App() {
             </div>
             <div className="price-card">
               <div className="price-plan">Agency</div>
-              <div className="price-amount"><sup>$</sup>49</div>
+              <div className="price-amount"><sup>$</sup>35.99</div>
               <div className="price-period">per month</div>
               <div className="price-desc">For agencies managing multiple pages and clients.</div>
               <ul className="price-features">
