@@ -302,6 +302,28 @@ export default function App() {
   const goPricing = () => { setPage("pricing"); window.scrollTo(0,0); };
   const goHome = () => { setPage("landing"); window.scrollTo(0,0); };
 
+  const [checkoutLoading, setCheckoutLoading] = useState(null);
+  const goCheckout = async (plan) => {
+    setCheckoutLoading(plan);
+    try {
+      const r = await fetch("/api/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan })
+      });
+      const data = await r.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        showToast("Checkout error. Try again.");
+        setCheckoutLoading(null);
+      }
+    } catch (e) {
+      showToast("Checkout error. Try again.");
+      setCheckoutLoading(null);
+    }
+  };
+
   const canGo = niche.trim() && platform;
   const getBtnCls = () => {
     if (!canGo) return "go-off";
@@ -583,7 +605,7 @@ export default function App() {
                 <li><span className="chk b">✓</span> Full hashtag strategy</li>
                 <li><span className="chk b">✓</span> Custom growth plan</li>
               </ul>
-              <button className="price-btn pro" onClick={goTool}>Get Pro Access</button>
+              <button className="price-btn pro" onClick={() => goCheckout("pro")} disabled={checkoutLoading === "pro"}>{checkoutLoading === "pro" ? "Redirecting…" : "Get Pro Access"}</button>
             </div>
             <div className="price-card">
               <div className="price-plan">Agency</div>
@@ -598,7 +620,7 @@ export default function App() {
                 <li><span className="chk r">✓</span> Priority support</li>
                 <li><span className="chk r">✓</span> Custom branding</li>
               </ul>
-              <button className="price-btn agency" onClick={goTool}>Contact Us</button>
+              <button className="price-btn agency" onClick={() => goCheckout("agency")} disabled={checkoutLoading === "agency"}>{checkoutLoading === "agency" ? "Redirecting…" : "Get Agency Access"}</button>
             </div>
           </div>
         </div>
