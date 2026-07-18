@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+const trackPixel = (event, params) => {
+  if (typeof window.fbq === "function") window.fbq("track", event, params);
+};
 
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -296,14 +300,21 @@ export default function App() {
   const [toast, setToast] = useState(null);
   const [error, setError] = useState(false);
 
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("success") === "true") {
+      trackPixel("Purchase", { value: 9.99, currency: "USD" });
+    }
+  }, []);
+
   const showToast = (m) => { setToast(m); setTimeout(() => setToast(null), 2500); };
   const copy = (t) => navigator.clipboard.writeText(t).then(() => showToast("✓ Copied!"));
-  const goTool = () => { setPage("tool"); setResults(null); setError(false); window.scrollTo(0,0); };
+  const goTool = () => { setPage("tool"); setResults(null); setError(false); window.scrollTo(0,0); trackPixel("ViewContent"); };
   const goPricing = () => { setPage("pricing"); window.scrollTo(0,0); };
   const goHome = () => { setPage("landing"); window.scrollTo(0,0); };
 
   const [checkoutLoading, setCheckoutLoading] = useState(null);
   const goCheckout = async (plan) => {
+    trackPixel("InitiateCheckout");
     setCheckoutLoading(plan);
     try {
       const r = await fetch("/api/create-checkout", {
