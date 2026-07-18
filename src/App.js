@@ -4,6 +4,8 @@ const trackPixel = (event, params) => {
   if (typeof window.fbq === "function") window.fbq("track", event, params);
 };
 
+const PLAN_PRICES = { pro: 9.99, agency: 35.99 };
+
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -301,8 +303,10 @@ export default function App() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("success") === "true") {
-      trackPixel("Purchase", { value: 9.99, currency: "USD" });
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("success") === "true") {
+      const value = PLAN_PRICES[params.get("plan")] ?? 9.99;
+      trackPixel("Purchase", { value, currency: "USD" });
     }
   }, []);
 

@@ -25,7 +25,7 @@ export default async function handler(req, res) {
       mode: 'subscription',
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: 'https://dualviral.com/?success=true',
+      success_url: `https://dualviral.com/?success=true&plan=${plan}`,
       cancel_url: 'https://dualviral.com/pricing'
     });
     return res.status(200).json({ url: session.url });
